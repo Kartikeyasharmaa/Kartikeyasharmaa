@@ -1,6 +1,4 @@
 // generatePacmanGraph.js
-// Generates a Pacman-style contribution graph (SVG)
-
 import fs from 'fs';
 
 const rows = 7;
