@@ -1,7 +1,39 @@
-- uses: actions/checkout@v3
-- uses: actions/setup-node@v3
-  with:
-    node-version: '20'
-- run: npm install
-- run: node generatePacmanGraph.js
-- commit & push changes
+name: Generate Pacman Contribution Graph
+
+on:
+  schedule:
+    - cron: "0 */12 * * *" # every 12 hours
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate Pacman graph
+        run: node generatePacmanGraph.js
+
+      - name: Commit & push SVG
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add pacman-contribution-graph.svg
+          git diff-index --quiet HEAD || git commit -m "Update Pacman contribution graph"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
