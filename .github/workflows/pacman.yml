@@ -2,7 +2,7 @@ name: Generate Pacman Contribution Graph 🟡
 
 on:
   schedule:
-    - cron: "0 */12 * * *" # runs every 12 hours
+    - cron: "0 */12 * * *"   # run every 12 hours
   workflow_dispatch:
   push:
     branches:
@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    timeout-minutes: 5
 
     steps:
       - name: Checkout repository
@@ -23,7 +24,7 @@ jobs:
         with:
           github_user_name: ${{ github.repository_owner }}
 
-      - name: Create output directory
+      - name: Move file to dist folder
         run: mkdir -p dist && mv pacman-contribution-graph.svg dist/
 
       - name: Push pacman-contribution-graph.svg to output branch
