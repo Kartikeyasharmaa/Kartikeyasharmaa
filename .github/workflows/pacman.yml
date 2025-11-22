@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '20'
 
-      # ❌ Remove npm install - it causes ENOENT error
+      # ❌ REMOVE npm install (no package.json exists)
       - name: Generate Pacman Graph
         run: node generatePacmanGraph.js
 
